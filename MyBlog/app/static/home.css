@@ -5,13 +5,13 @@
     box-sizing: border-box;
   }
   
-  /* Body styling */
+  
   body {
     font-family: Arial, sans-serif;
     background-image: url("../static/images/homebackground.jpg");
   }
   
-  /* Header section styling */
+  
   #header {
     
     padding: 20px;
