@@ -1,0 +1,55 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url("../static/images/homebackground.jpg");
+  }
+  
+  /* Header section styling */
+  #header {
+    
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid red;
+  }
+  
+  /* Logo styling */
+  #header img {
+    max-width: 35%;
+    height: 5%;
+  }
+  
+  /* Button styling */
+  #header button {
+    background-color: whitesmoke;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: blue;
+    border-radius: 10px;
+    margin-top: 15%;
+  }
+  
+  #header button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Our Blogs section styling */
+  #ourblogs {
+    padding: 20px;
+  }
+  
+  #ourblogs h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  

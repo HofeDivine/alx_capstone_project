@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog</title>
+    <link rel="stylesheet" href="../static/blogpost.css">
+    <!-- Include a rich text editor library -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+</head>
+<body>
+    <form method="POST" action="/create_post" enctype="multipart/form-data">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="content">Content</label>
+        <!-- Replace the textarea with a rich text editor -->
+        <textarea id="content" name="content"></textarea>
+        
+        <label for="author">Author</label>
+        <input type="text" id="author" name="author" required>
+        
+        <label for="picture">Upload Picture:</label>
+        <input type="file" id="picture" name="picture" accept="image/*">
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Initialize the rich text editor -->
+    <script>
+        let editorInstance;
+        
+        ClassicEditor
+            .create(document.querySelector('#content'))
+            .then(editor => {
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        
+        // Assuming the form has an id, if not, you should add an id to the form for easier targeting
+        document.querySelector('form').addEventListener('submit', function(event) {
+            // Retrieve the data from CKEditor instance
+            const editorData = editorInstance.getData();
+            
+            // Check if the editor content is empty
+            if (!editorData.trim()) {
+                // Prevent form submission
+                event.preventDefault();
+                // Alert or display an error message
+                alert('Content is required.');
+                // Focus the CKEditor instance, optional, based on how you want to handle the error display
+                editorInstance.editing.view.focus();
+            }
+        });
+        </script>
+        
+</body>
+</html>
+

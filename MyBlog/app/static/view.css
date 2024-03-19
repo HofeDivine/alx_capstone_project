@@ -1,0 +1,49 @@
+/* Style for the blog post content */
+.post-content {
+    margin-top: 20px;
+}
+
+.post-content h2 {
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+}
+
+.post-content p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+
+}
+
+/* Style for the posted date */
+.posted-date {
+    color: #999;
+    font-size: 14px;
+}
+
+/* Style for the author's information */
+.author-info {
+    margin-top: 30px;
+}
+
+.author-info img {
+    width: 50px; /* Adjust the size as needed */
+    height: 50px; /* Adjust the size as needed */
+    border-radius: 50%; /* Make the image round */
+    margin-right: 10px;
+}
+
+.author-info h4 {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}

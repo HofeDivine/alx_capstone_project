@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blogs.title }}</title>
+    
+    <link rel="stylesheet" href="../static/view.css">
+</head>
+<body>
+    {% for blog in blogs %}
+        <!-- Display the author's picture next to their name -->
+        <div class="author-info">
+            
+            <h4>Author: {{ blog.author.username }}</h4>
+        </div>
+
+        <!-- Display the post content and other details -->
+        <div class="post-content">
+            <h2>{{ blog.title }}</h2>
+            <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }}</p>
+            <p>{{ blog.content |safe }}</p>
+        </div>
+        <!-- Buttons for commenting, updating, and deleting -->
+        <div>
+            <button type="button" onclick="window.location.href='/comment'">Comment</button>
+            <button type="button" onclick="window.location.href='/displayComments'">Read Comments</button>
+            <button type="button" onclick="window.location.href='/update'">Update</button>
+            <button type="button" onclick="window.location.href='/delete'">Delete</button>
+        </div>
+    {% endfor %}
+</body>
+</html>
