@@ -15,6 +15,7 @@ from flask_bcrypt import Bcrypt
 from app.blueprints.routes import load_user
 from .extensions import db, bcrypt, login_manager
 import os
+from .decorators import strip_html_tags
 
 login_manager = LoginManager()
 
@@ -22,6 +23,7 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     
+    # app.jinja_env.filters['strip_html_tags'] = strip_html_tags
     # Configure Flask application
     app.config['SECRET_KEY'] = 'divinediv'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://myname:capstonepass@localhost/mybase'

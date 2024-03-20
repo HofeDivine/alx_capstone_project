@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Comments</title>
+    <link rel="stylesheet" href="../static/comments.css">
+</head>
+<body>
+   <form id="postComments" method="Post" action="{{url_for('routes.comments',id=id)}}">
+       <label for="author">Name</label> 
+       <input type="text" id="author" name="author" required>
+       <label for="content">Comments</label> 
+       <input type="text" id="content" name="content" required>
+       <button type="submit" id="Submit">Post Comment</button>
+   </form> 
+</body>
+</html>

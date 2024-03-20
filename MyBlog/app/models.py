@@ -1,3 +1,4 @@
+from sqlalchemy import Nullable
 from .extensions import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -8,7 +9,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    blog_posts = db.relationship('CreateBlog', backref='author', lazy=True)
+    blog_posts = db.relationship('CreateBlog', backref='author', lazy=True,cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -27,8 +28,18 @@ class CreateBlog(db.Model):
         return f"BlogPost('{self.title}', '{self.date_posted}')"
 class CreateComments(db.Model):
     __tablename__ = 'CreateComments'
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    name = db.Column(db.Text, nullable = False)
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.Text, nullable=False)
+    
+    # Foreign key to link comments to the corresponding blog post
+    post_id = db.Column(db.Integer, db.ForeignKey('CreateBlog.id'), nullable=False)
+    
+    # Relationship attribute to access the associated blog post
+    post = db.relationship('CreateBlog', backref=db.backref('comments', lazy=True,cascade="all, delete"))
+
+    def __repr__(self):
+        return f"Comment('{self.content}')"
+
     
 

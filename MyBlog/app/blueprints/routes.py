@@ -1,10 +1,11 @@
 
 from flask import Blueprint, current_app, request, render_template, redirect, url_for, flash
 from  app.extensions import db, bcrypt, login_manager
-from app.models import User,CreateBlog
+from app.models import CreateComments, User,CreateBlog
 from flask_login import login_required,current_user,logout_user
-from app.decorators import custom_login_required
+from app.decorators import custom_login_required,strip_html_tags
 from datetime import datetime
+
 
 
 
@@ -71,7 +72,7 @@ def userlogin():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('routes.userlogin'))
+    return redirect(url_for('routes.home'))
 @bp.route('/dashboard')
 @login_required
 def dashboard():
@@ -104,11 +105,62 @@ def createPost():
 def displalAllBlogs():
     blogs = CreateBlog.query.order_by(CreateBlog.date_posted.desc()).all()
     return render_template('displayblogs.html',blogs= blogs)
-@bp.route('/blog/<int:user_id>')
-def View(user_id):
-    
-    blog = CreateBlog.query.filter_by(user_id=user_id).all()
-    return render_template('view.html',blogs=blog)
+@bp.route('/blog/<int:id>')
+def View(id):
+    # post_id = CreateBlog.query.get(id)
+    blog = CreateBlog.query.filter_by(id=id).all()
+    comments = CreateComments.query.filter_by(id=id).all()
+    return render_template('view.html',blogs=blog,comments=comments)
+
+@bp.route('/comments/<int:id>', methods=['POST','GET'])
+@custom_login_required
+def comments(id):
+    if request.method == 'POST':
+        authorName= request.form['author']
+        content = request.form['content']
+        new_comment = CreateComments(author=authorName,content=content,post_id=id)
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect(url_for('routes.View',id=id))
+    else:
+         return render_template('commentPost.html', id=id)
+@bp.route('/update/<int:id>', methods=['GET','POST'])
+@custom_login_required
+def updatePost(id):
+    # Retrieve the post from the database
+    post = CreateBlog.query.get_or_404(id)
+    # Check if the current user is the author of the post
+    if current_user.id != post.user_id:
+        # Redirect to home or show an error message
+        return redirect(url_for('routes.home'))
+    if request.method == 'POST':
+        # Update the post with the form data
+        post.title = request.form['title']
+        post.content = request.form['content']
+        
+        # Commit the changes to the database
+        db.session.commit()
+        
+        flash('Post updated successfully.')
+        return redirect(url_for('routes.View',id=id))
+    stripped_content = strip_html_tags(post.content)
+    return render_template('updatePost.html', post=post,stripped_content=stripped_content,id=id)
+@bp.route('/deletePost/<int:id>', methods=['GET'])
+@custom_login_required
+def deletePost(id):
+    post = CreateBlog.query.get_or_404(id)
+
+    # Ensure the current user is the author of the post
+    if current_user.id != post.user_id:
+        flash('You do not have permission to delete this post.', 'danger')
+        return redirect(url_for('routes.dashboard'))
+
+    # Delete the post
+    db.session.delete(post)
+    db.session.commit()
+
+    flash('Your post has been deleted.', 'success')
+    return redirect(url_for('routes.home'))
 
 
 

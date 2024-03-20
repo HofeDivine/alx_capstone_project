@@ -10,7 +10,7 @@
     <ul>
         
         {% for blog in blogs %}
-            <li><a href="{{ url_for('routes.View', user_id=blog.user_id) }}">{{ blog.title }}</a></li>
+            <li><a href="{{ url_for('routes.View', id=blog.id) }}">{{ blog.title }}</a></li>
 
         {% endfor %}
     </ul>

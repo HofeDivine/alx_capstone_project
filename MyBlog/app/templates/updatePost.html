@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Post</title>
+    <link rel="stylesheet" href="../static/blogpost.css">
+</head>
+<body>
+    
+    <form id="updatePost" method="POST" action="{{url_for('routes.updatePost', id=id)}}">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ post.title }}" required>
+        
+        <label for="content">Content:</label>
+        <textarea id="content" name="content"  required>{{ stripped_content }}</textarea>
+        
+        <button type="submit">Update Post</button>
+    </form>
+</body>
+</html>
