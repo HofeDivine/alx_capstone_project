@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOGIN</title>
     <link rel="stylesheet" href="../static/register.css">
+    <!-- Include SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 </head>
 <body>
     <h1>Login Form</h1>
@@ -19,6 +21,7 @@
         
         <button type="submit" id="submitButton">Login</button>
     </form>  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded",function(){
         var submitForm = document.getElementById('LoginForm');
@@ -42,6 +45,26 @@
                 return regex.test(email);
             }    
         })
+        
+    // Define a variable to store flashed messages from Flask
+    let flashMessages = [
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {"category": "{{ category }}", "message": "{{ message|safe }}"},
+            {% endfor %}
+        {% endwith %}
+    ];
+
+    // Loop through each flashed message and display it as an alert
+    flashMessages.forEach(msg => {
+        // Display the flashed message using SweetAlert
+        Swal.fire({
+            title: 'Notice!',
+            text: msg.message,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    });
     </script>
 </body>
 </html>

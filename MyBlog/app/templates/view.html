@@ -8,32 +8,30 @@
     <title>{{ blogs.title }}</title>
     
     <link rel="stylesheet" href="../static/view.css">
+     <!-- Include SweetAlert CSS -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </head>
 </head>
 <body>
     {% for blog in blogs %}
-        <!-- Display the author's picture next to their name -->
-    <div class="author-info">
-        <!-- Author's picture -->
-        <!-- <img src="{{ url_for('static',filename=blog.author.picture_path) }}" alt="Author's Picture">
-         -->
-        <!-- Author's name -->
-        <h4></h4>
-    </div>
-
+    
+    
+    <section class="post">
     <!-- Display the post content and other details -->
-    <div class="post-content">
+    <div class="post-heading">
         <h2>{{ blog.title }}</h2>
         <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
-        <p>{{ blog.content|safe }}</p>
-    </div>
+    </div> 
+    <div class="post-content"><p>{{ blog.content|safe }}</p></div>
     
      <!--3 buttons for deleting,udating,commenting-->
-        <div>
+        <div class="buttons">
             <button type="button" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
             
             <button type="button" onclick="window.location.href='/update/{{blog.id}}'">Update</button>
             <button type="button" onclick="window.location.href='/deletePost/{{blog.id}}'">Delete</button>
         </div>
+    </section>
         <div>
             <h3>Comments</h3>
             <ul>
@@ -43,6 +41,33 @@
             </ul>
         </div>
     {% endfor %}
-    
+    <!-- Include SweetAlert JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Define a variable to store flashed messages from Flask
+    let flashMessages = [
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {"category": "{{ category }}", "message": "{{ message|safe }}"},
+            {% endfor %}
+        {% endwith %}
+    ];
+
+    // Loop through each flashed message and display it as an alert
+    flashMessages.forEach(msg => {
+        // Display the flashed message using SweetAlert
+        Swal.fire({
+            title: 'Notice!',
+            text: msg.message,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    });
+  </script>
+
+
+
+
+
 </body>
 </html>

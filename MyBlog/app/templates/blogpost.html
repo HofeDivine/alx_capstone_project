@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../static/blogpost.css">
     <!-- Include a rich text editor library -->
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 </head>
 <body>
     <form method="POST" action="/create_post" enctype="multipart/form-data">
@@ -25,7 +26,7 @@
         
         <button type="submit">Submit</button>
     </form>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Initialize the rich text editor -->
     <script>
         let editorInstance;
@@ -54,6 +55,24 @@
                 editorInstance.editing.view.focus();
             }
         });
+        let flashMessages = [
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {"category": "{{ category }}", "message": "{{ message|safe }}"},
+            {% endfor %}
+        {% endwith %}
+    ];
+
+    // Loop through each flashed message and display it as an alert
+    flashMessages.forEach(msg => {
+        // Display the flashed message using SweetAlert
+        Swal.fire({
+            title: 'Notice!',
+            text: msg.message,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    });
         </script>
         
 </body>
