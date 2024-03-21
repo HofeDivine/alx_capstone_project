@@ -17,7 +17,7 @@
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    border: 2px solid red;
+    
   }
   
   /* Logo styling */
@@ -52,4 +52,50 @@
     font-size: 24px;
     margin-bottom: 20px;
   }
-  
+  @media screen and (max-width: 832px) {
+    /* Styles applied when screen width is less than or equal to 600px */
+    #header {
+      display: flex;
+      flex-direction: column;
+    }
+    #header div {
+      display: flex;
+      flex-direction: column;
+
+    }
+  #ourblogs {
+    background-color: red;
+    margin-left: 30%;
+    margin-right: 30%;
+    color: chartreuse;
+    border-radius: 10px;
+  }
+  #createblog {
+    background-color: red;
+    margin-left: 30%;
+    margin-right: 30%;
+    color: chartreuse;
+    border-radius: 10px;
+  }
+  #register {
+    background-color: red;
+    margin-left: 30%;
+    margin-right: 30%;
+    color: chartreuse;
+    border-radius: 10px;
+  }
+  #login {
+    background-color: red;
+    margin-left: 30%;
+    margin-right: 30%;
+    color: chartreuse;
+    border-radius: 10px;
+  }
+  #logout {
+    background-color: red;
+    margin-left: 30%;
+    margin-right: 30%;
+    color: chartreuse;
+    border-radius: 10px;
+  }
+  }
