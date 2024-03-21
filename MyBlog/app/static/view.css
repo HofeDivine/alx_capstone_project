@@ -13,7 +13,7 @@ height: 60%;
 }
 
 .post-content {
-    text-align: center;
+    text-align: justify;
     
     /* border: 5px solid blue; */
     width: 100%;
@@ -22,14 +22,16 @@ height: 60%;
     
 }
 .post-content p {
-    letter-spacing: 100%;
+    margin-left: 2%;
+    margin-right: 2%;
+    letter-spacing: 90%;
     color:aliceblue;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 100%;
+    font-weight: 1px;
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
-    font-size: larger;
+    
 }
 
 
@@ -44,12 +46,26 @@ height: 60%;
 .author-info {
     margin-top: 30px;
 }
+.buttons {
+    display: flex;
 
+    justify-content: space-between;
+    padding: 2%;
 
-
-.author-info h4 {
-    color: #333;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
+    
+}
+#comment {
+    background-color: green;
+    border-radius: 10px;
+    height: 10%;
+}
+#update {
+    background-color: rgb(128, 0, 58);
+    border-radius: 10px;
+    height: 10%;
+}
+#delete {
+    background-color: red;
+    border-radius: 10px;
+    height: 10%;
 }

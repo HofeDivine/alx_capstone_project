@@ -26,10 +26,10 @@
     
      <!--3 buttons for deleting,udating,commenting-->
         <div class="buttons">
-            <button type="button" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
+            <button type="button" id="comment" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
             
-            <button type="button" onclick="window.location.href='/update/{{blog.id}}'">Update</button>
-            <button type="button" onclick="window.location.href='/deletePost/{{blog.id}}'">Delete</button>
+            <button type="button" id="update" onclick="window.location.href='/update/{{blog.id}}'">Update</button>
+            <button type="button" id="delete" onclick="window.location.href='/deletePost/{{blog.id}}'">Delete</button>
         </div>
     </section>
         <div>
