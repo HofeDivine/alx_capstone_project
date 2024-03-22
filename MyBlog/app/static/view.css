@@ -1,8 +1,8 @@
-/* Style for the blog post content */
+
 .post {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures 'buttons' container sticks to bottom */
+    justify-content: space-between; 
     margin-left: 2%;
     margin-right: 2%;
     /* border: 20px solid red; */
@@ -13,7 +13,7 @@
   }
   
   #content {
-    /* Remove height property to allow it to expand based on content */
+    
     display: flex;
     flex-direction: column;
     margin-left: 2%;
@@ -23,26 +23,25 @@
     font-size: 20px;
     text-align: center;
     justify-content: center;
-    /* Set flex-grow property to fill remaining space within 'post' container */
+    
     flex-grow: 1;
     /* border: 4px solid red; */
   }
   
   .buttons {
     display: flex;
-    flex-direction: row; /* Ensure buttons stack vertically */
+    flex-direction: row; 
     align-items: center;
-    justify-content: center; /* Align buttons to the bottom */
+    justify-content: center; 
     padding: 10px;
-    /* Remove height property to allow it to expand based on content */
-    /* border: 5px solid red; */
+    
   }
   
   #commentbutton {
     background-color: green;
     border-radius: 10px;
     height: 20px;
-    margin: 5px; /* Add margin between buttons */
+    margin: 5px; 
   }
   
   #update
@@ -50,7 +49,7 @@
     background-color: rgb(207, 192, 255);
     border-radius: 10px;
     height: 20px;
-    margin: 5px; /* Add margin between buttons */
+    margin: 5px; 
   }
 
   #delete {
@@ -73,28 +72,29 @@
     padding: 0;
     width: 100%;
     height: 100%;
-    /* Optional: prevents scrollbars if you don't want any scrolling */
+    
   }
+  /* MEDIA QUERRY for tablets */
   @media only screen and (min-width: 768px) and (max-width: 1023px) {
     #content {
-      font-size: 20px; /* Adjust font size for tablets */
-      letter-spacing: 1px; /* Adjust letter spacing for tablets */
+      font-size: 20px; 
+      letter-spacing: 1px; 
     margin: 0;
     }
-  
+  /* Create a pseudo-element to force container to fill remaining space */
     #content::after {
-        content: ""; /* Create a pseudo-element to force container to fill remaining space */
+        content: ""; 
         flex: 1; /* Allow pseudo-element to grow and fill remaining space */
       }}
   /* For desktops (> 1023px) */
 @media only screen and (min-width: 1024px) {
     #content {
-      font-size: 20px; /* Adjust font size for desktops */
-      letter-spacing: 2px; /* Adjust letter spacing for desktops */
+      font-size: 20px; 
+      letter-spacing: 2px; 
     }
     
     #content::after {
-        content: ""; /* Create a pseudo-element to force container to fill remaining space */
-        flex: 1; /* Allow pseudo-element to grow and fill remaining space */
+        content: ""; 
+        flex: 1; 
       }}
   

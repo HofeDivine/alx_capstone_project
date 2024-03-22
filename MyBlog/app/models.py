@@ -1,3 +1,6 @@
+"""This is for defining our user models
+User class defines what goes into our user table 
+"""
 from sqlalchemy import Nullable
 from .extensions import db
 from flask_login import UserMixin

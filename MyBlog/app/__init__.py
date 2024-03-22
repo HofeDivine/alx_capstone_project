@@ -1,13 +1,4 @@
-# from flask import Flask, render_template
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_bcrypt import Bcrypt
-# # from flask_login import LoginManager
-# from flask_login import LoginManager, login_user
 
-
-# from flask import Flask
-# from .extensions import db, bcrypt, login_manager
-# from . import routes, models, forms
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -23,7 +14,7 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     
-    # app.jinja_env.filters['strip_html_tags'] = strip_html_tags
+    
     # Configure Flask application
     app.config['SECRET_KEY'] = 'divinediv'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://myname:capstonepass@localhost/mybase'
@@ -40,23 +31,3 @@ def create_app():
     with app.app_context():
          db.create_all()
     return app
-# # Initialize Flask extensions
-# db = SQLAlchemy(app)
-# from app import routes,models,forms
-    
-# login_manager = LoginManager(app)
-# bcrypt = Bcrypt(app)
-
-
-# login_manager.login_view = 'login'  # Set the login view name (route) for redirecting unauthenticated users
-# login_manager.login_message = 'Please log in to access this page.'  
-# #  Import views/routes (if not using blueprints)
-# #from app import routes
-
-
-
-# # Error handlers (optional)
-# # @app.errorhandler(404)
-# # def page_not_found(error):
-# #     return render_template('404.html'), 404
-

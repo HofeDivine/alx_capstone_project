@@ -167,15 +167,12 @@ def deletePost(id):
     db.session.commit()
 
     flash('Your post has been deleted.', 'success')
-    return redirect(url_for('routes.View',id=id))
+    return render_template('home.html')
 
 @bp.route('/search', methods=['GET'])
 def search():
     keyword = request.args.get('keyword')
     if keyword:
-        # Perform a search query based on the keyword
-        # For example, you might query the database for blog posts with titles containing the keyword
-        # Adjust this query based on your database schema and requirements
         blogs = CreateBlog.query.filter(CreateBlog.title.ilike(f'%{keyword}%')).all()
         return render_template('displayblogs.html', blogs=blogs, keyword=keyword)
     else:
