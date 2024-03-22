@@ -167,7 +167,7 @@ def deletePost(id):
     db.session.commit()
 
     flash('Your post has been deleted.', 'success')
-    return redirect(url_for('routes.home'))
+    return redirect(url_for('routes.View',id=id))
 
 @bp.route('/search', methods=['GET'])
 def search():

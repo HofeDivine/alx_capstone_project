@@ -22,21 +22,21 @@
         <h2>{{ blog.title }}</h2>
         <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
     </div> 
-    <div class="post-content"><p>{{ blog.content|safe }}</p></div>
+    <p class="post-content">{{ blog.content|safe }}</p>
     
      <!--3 buttons for deleting,udating,commenting-->
         <div class="buttons">
-            <button type="button" id="comment" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
+            <button type="button" id="commentbutton" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
             
             <button type="button" id="update" onclick="window.location.href='/update/{{blog.id}}'">Update</button>
             <button type="button" id="delete" onclick="window.location.href='/deletePost/{{blog.id}}'">Delete</button>
         </div>
-    </section>
-        <div>
+    </section >
+        <div class="comments">
             <h3>Comments</h3>
             <ul>
                 {% for comment in blog.comments %}
-                    <li>{{ comment.author }} - {{ comment.content|safe }}</li>
+                    <li>{{ comment.author }} by {{ comment.content|safe }}</li>
                 {% endfor %}
             </ul>
         </div>

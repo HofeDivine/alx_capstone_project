@@ -9,52 +9,38 @@ margin-right: 2%;
 text-align: center;
 background-image:url('../static/images/greg-rakozy-0LU4vO5iFpM-unsplash.jpg') ;
 color: aliceblue;
-height: 60%;
+height: 90%;
 }
 
-.post-content {
-    text-align: justify;
-    
-    /* border: 5px solid blue; */
-    width: 100%;
-    height: 90%;
-    
-    
-}
-.post-content p {
+
+.post-content  {
+    display: flex;
     margin-left: 2%;
     margin-right: 2%;
-    letter-spacing: 90%;
+    letter-spacing: 100%;
     color:aliceblue;
-    font-size: 100%;
-    font-weight: 1px;
-    margin-bottom: 10px;
-    display: flex;
+    font-size: 20px;
+    text-align: center;
+    
     justify-content: center;
+    height: 50vh;
     
 }
 
 
 
-/* Style for the posted date */
-.posted-date {
-    color: black;
-    font-size: 30px;
-}
 
-/* Style for the author's information */
-.author-info {
-    margin-top: 30px;
-}
+
+
 .buttons {
     display: flex;
 
     justify-content: space-between;
-    padding: 2%;
+
 
     
 }
-#comment {
+#commentbutton {
     background-color: green;
     border-radius: 10px;
     height: 10%;
@@ -68,4 +54,15 @@ height: 60%;
     background-color: red;
     border-radius: 10px;
     height: 10%;
+}
+.comments {
+    height: auto;
+    border: 3px solid green;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+     /* Optional: prevents scrollbars if you don't want any scrolling */
 }
