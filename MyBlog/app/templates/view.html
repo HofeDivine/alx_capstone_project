@@ -18,11 +18,11 @@
     
     <section class="post">
     <!-- Display the post content and other details -->
-    <div class="post-heading">
-        <h2>{{ blog.title }}</h2>
-        <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
-    </div> 
-    <p class="post-content">{{ blog.content|safe }}</p>
+        <div class="post-heading">
+            <h2>{{ blog.title }}</h2>
+            <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
+        </div> 
+    <div id="content"> {{ blog.content|safe }}</div>
     
      <!--3 buttons for deleting,udating,commenting-->
         <div class="buttons">
