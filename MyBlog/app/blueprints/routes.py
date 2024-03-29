@@ -1,10 +1,18 @@
 
-from flask import Blueprint, current_app, request, render_template, redirect, url_for, flash,get_flashed_messages
+from flask import Blueprint, current_app, request, render_template, redirect, url_for, flash,get_flashed_messages,send_file
 from  app.extensions import db, bcrypt, login_manager
-from app.models import CreateComments, User,CreateBlog
+from app.models import CreateComments, User,CreateBlog,BlogImage,BlogLink,BlogVideo
 from flask_login import login_required,current_user,logout_user
 from app.decorators import custom_login_required,strip_html_tags
 from datetime import datetime
+import base64
+from flask import request, jsonify, url_for, current_app
+from datetime import datetime
+from bs4 import BeautifulSoup
+from werkzeug.utils import secure_filename
+import os
+from urllib.parse import urlparse
+
 
 
 
@@ -89,22 +97,33 @@ def createPost():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form.get('content')
-        
+        filtered_content = filter_file_content(content)
         author_id = current_user.id
         date_posted = datetime.utcnow()
+        picture = request.files['picture']
         
-                
-        new_post = CreateBlog(title=title, content=content, user_id=author_id, date_posted=date_posted)
+        new_post = CreateBlog(title=title, content=content, user_id=author_id, date_posted=date_posted,picture=picture.read())
         db.session.add(new_post)
         db.session.commit()
         flash('You have created a blog succesfully','success')
         return redirect(url_for('routes.home'))  
         
-
+    
     else:
         flash('Your post is not successful! Try again','failure')
         return render_template('blogpost.html')
+def filter_file_content(content):
+    # Parse HTML content
+    soup = BeautifulSoup(content, 'html.parser')
     
+    # Remove any file-related elements (e.g., <img>, <a>, <video>, etc.)
+    for tag in soup.find_all(['img', 'a', 'video']):
+        tag.extract()  # Remove the tag from the HTML
+    
+    # Get the remaining text content
+    filtered_content = soup.get_text(separator=' ')
+    
+    return filtered_content    
 
 @bp.route('/allBlogs')
 def displalAllBlogs():
@@ -113,9 +132,18 @@ def displalAllBlogs():
 @bp.route('/blog/<int:id>')
 def View(id):
     # post_id = CreateBlog.query.get(id)
-    blog = CreateBlog.query.filter_by(id=id).all()
+    blog = CreateBlog.query.filter_by(id=id).first()
     comments = CreateComments.query.filter_by(id=id).all()
-    return render_template('view.html',blogs=blog,comments=comments)
+    parsed_urls = parse_content(blog.content)
+    if blog is None:
+        flash('Blog post does not exist', 'error')
+        return redirect(url_for('routes.home'))
+    if blog.picture:
+        encoded_picture = base64.b64encode(blog.picture).decode('utf-8')
+    else:
+        # If there's no picture, set picture to None or any default value
+        encoded_picture= None
+    return render_template('view.html',blog=blog,comments=comments,encoded_picture=encoded_picture,parsed_urls=parsed_urls)
 
 @bp.route('/comments/<int:id>', methods=['POST','GET'])
 @custom_login_required
@@ -182,3 +210,69 @@ def search():
 
 
 
+
+
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@bp.route('/upload/image', methods=['POST'])
+def upload_image():
+    if 'upload' not in request.files:
+        flash('No file part', 'error')
+        return jsonify({"uploaded": 0, "error": {"message": "No file part"}})
+
+    file = request.files['upload']
+    content = request.form.get('content')
+
+    if file.filename == '':
+        flash('No selected file', 'error')
+        return jsonify({"uploaded": 0, "error": {"message": "No selected file"}})
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(current_app.root_path, 'static/uploads', filename)
+        file.save(save_path)
+
+        file_url = url_for('static', filename='uploads/' + filename, _external=True)
+
+        image_urls, video_urls, link_urls = parse_content(content)
+
+        blog_id = request.form.get('blog_id')
+        save_urls_to_database(blog_id, image_urls, video_urls, link_urls)
+
+        return jsonify({"uploaded": 1, "fileName": filename, "url": file_url})
+    else:
+        flash('Invalid file extension. Allowed extensions are: png, jpg, jpeg', 'error')
+        return jsonify({"uploaded": 0, "error": {"message": "Invalid file extension"}})
+def save_urls_to_database(blog_id, image_urls, video_urls, link_urls):
+    # Save image URLs to BlogImage table
+    for url in image_urls:
+        image = BlogImage(url=url, blog_id=blog_id)
+        db.session.add(image)
+
+    # Save video URLs to BlogVideo table
+    for url in video_urls:
+        video = BlogVideo(url=url, blog_id=blog_id)
+        db.session.add(video)
+
+    # Save link URLs to BlogLink table
+    for url in link_urls:
+        link = BlogLink(url=url, blog_id=blog_id)
+        db.session.add(link)
+
+    # Commit all changes to the database
+    db.session.commit()
+def parse_content(content):
+    soup = BeautifulSoup(content, 'html.parser')
+    parsed_urls = []
+
+    # Parse YouTube video URLs
+    for iframe in soup.find_all('iframe'):
+        src = iframe.get('src')
+        if src and 'youtube.com/embed/' in src:
+            parsed_urls.append(src)
+
+    return parsed_urls

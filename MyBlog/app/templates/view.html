@@ -1,49 +1,61 @@
-<!-- blog_post.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ blogs.title }}</title>
+    <title>{{ blog.title }}</title>
     
     <link rel="stylesheet" href="../static/view.css">
      <!-- Include SweetAlert CSS -->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    </head>
 </head>
 <body>
-    {% for blog in blogs %}
     
-    
-    <section class="post">
+<section class="post">
     <!-- Display the post content and other details -->
-        <div class="post-heading">
-            <h2>{{ blog.title }}</h2>
-            <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
-        </div> 
-    <div id="content"> {{ blog.content|safe }}</div>
+    <div class="post-heading">
+        <h2>{{ blog.title }}</h2>
+        <p>Posted on {{ blog.date_posted.strftime('%B %d, %Y') }} by {{ blog.author.username }}</p>
+    </div> 
+    <div id="content">{{ blog.content|safe }}</div>
     
-     <!--3 buttons for deleting,udating,commenting-->
-        <div class="buttons">
-            <button type="button" id="commentbutton" onclick="window.location.href='/comments/{{blog.id}}'">Comment</button>
-            
-            <button type="button" id="update" onclick="window.location.href='/update/{{blog.id}}'">Update</button>
-            <button type="button" id="delete" onclick="window.location.href='/deletePost/{{blog.id}}'">Delete</button>
-        </div>
-    </section >
-        <div class="comments">
-            <h3>Comments</h3>
-            <ul>
-                {% for comment in blog.comments %}
-                    <li>{{ comment.author }} by {{ comment.content|safe }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+    <!-- Display the image if available -->
+    {% if encoded_picture %}
+        <img src="data:image/jpeg;base64,{{ encoded_picture }}" alt="Blog Picture">
+    {% endif %}
+    
+    {% if blog.video_url %}
+    <video controls>
+        <source src="{{ blog.video_url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+{% endif %}
+    <!-- Display links if available -->
+    {% for link in blog.links %}
+        <a href="{{ link.url }}">{{ link.url }}</a>
     {% endfor %}
-    <!-- Include SweetAlert JS -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
+    
+    <!-- 3 buttons for deleting, updating, commenting -->
+    <div class="buttons">
+        <button type="button" id="commentbutton" onclick="window.location.href='/comments/{{ blog.id }}'">Comment</button>
+        <button type="button" id="update" onclick="window.location.href='/update/{{ blog.id }}'">Update</button>
+        <button type="button" id="delete" onclick="window.location.href='/deletePost/{{ blog.id }}'">Delete</button>
+    </div>
+
+    <!-- Comments section -->
+    <div class="comments">
+        <h3>Comments</h3>
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.author }} by {{ comment.content|safe }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
     // Define a variable to store flashed messages from Flask
     let flashMessages = [
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -63,11 +75,6 @@
             confirmButtonText: 'OK'
         });
     });
-  </script>
-
-
-
-
-
+</script>
 </body>
 </html>

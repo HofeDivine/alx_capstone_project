@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Blog</title>
     <link rel="stylesheet" href="../static/blogpost.css">
-    <!-- Include a rich text editor library -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    
+    
+<script src="../static/ckeditor.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 </head>
 <body>
@@ -29,21 +31,34 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Initialize the rich text editor -->
     <script>
-        let editorInstance;
-        
         ClassicEditor
-            .create(document.querySelector('#content'))
+            .create(document.querySelector('#content'), {
+                // // Include necessary plugins
+                // plugins: [Image, Link, MediaEmbed],
+                // // Customize toolbar
+                // toolbar: ['heading', '|', 'bold', 'italic', 'link', 'image', 'mediaEmbed'],
+                // // Configuration for image upload
+                simpleUpload: {
+                    // Your enabled route for handling uploads
+                    uploadUrl: '/upload/image',
+                    // Headers sent along with the XMLHttpRequest to the upload server.
+                    // headers: {
+                    //     'X-CSRF-TOKEN': 'CSRF-Token',
+                    //     // Any other custom headers can be specified here
+                    // }
+                }
+            })
             .then(editor => {
-                editorInstance = editor;
+                window.editor = editor;
             })
             .catch(error => {
                 console.error(error);
             });
-        
-        
+    
+        // Handle form submission
         document.querySelector('form').addEventListener('submit', function(event) {
             // Retrieve the data from CKEditor instance
-            const editorData = editorInstance.getData();
+            const editorData = editor.getData();
             
             // Check if the editor content is empty
             if (!editorData.trim()) {
@@ -52,9 +67,14 @@
                 // Alert or display an error message
                 alert('Content is required.');
                 // Focus the CKEditor instance, optional, based on how you want to handle the error display
-                editorInstance.editing.view.focus();
+                editor.editing.view.focus();
             }
         });
+    
+
+
+
+    
         let flashMessages = [
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
